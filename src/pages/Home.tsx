@@ -14,7 +14,7 @@ export function Home() {
   return (
     <div className="app-shell">
       <header className="page-header">
-        <h1>Secret Shelf</h1>
+        <h1>Offline Notes Lab</h1>
         <p className="subtitle">
           A private place to jot notes before they're ready for anyone else.
         </p>
