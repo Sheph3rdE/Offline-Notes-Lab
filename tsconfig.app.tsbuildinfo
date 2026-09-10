@@ -1,0 +1,1 @@
+{"root":["./src/App.tsx","./src/main.tsx","./src/vite-env.d.ts","./src/components/NoteForm.tsx","./src/components/NoteList.tsx","./src/components/StatusStamp.tsx","./src/components/WorkshopTracker.tsx","./src/hooks/useNotes.ts","./src/hooks/useOnlineStatus.ts","./src/hooks/useWorkshopStep.ts","./src/pages/Home.tsx"],"version":"5.9.3"}
