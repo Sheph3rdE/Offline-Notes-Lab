@@ -1,50 +1,100 @@
-# React + TypeScript + Vite
+# Secret Shelf
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A quiet place to keep notes before they're ready for anyone else — styled like an old library card catalog.
 
-Currently, two official plugins are available:
+Secret Shelf is a small React + TypeScript app for jotting down raw thoughts and working them into shape through a five-step workshop process: **Jot → Sort → Draft → Revise → Shelve**. Everything is saved locally in your browser, so it works offline and keeps your notes private to your own device.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## Expanding the ESLint configuration
+- **Add notes** — a simple title + body form for capturing thoughts quickly
+- **Local persistence** — notes are saved to `localStorage`, so they survive page reloads and browser restarts
+- **Online/offline indicator** — a status stamp in the sidebar reflects your connection in real time, using `navigator.onLine` and the browser's `online`/`offline` events
+- **Workshop tracker** — a five-step sidebar tracker (Jot, Sort, Draft, Revise, Shelve) to mark where a note currently stands; your progress is remembered between visits
+- **Two-column layout** — notes and the add-note form on the left, status and tracker in a sticky sidebar on the right, collapsing to a single column on smaller screens
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Tech stack
 
-- Configure the top-level `parserOptions` property like this:
+- [React 18](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)
+- [Vite](https://vitejs.dev/) for development and bundling
+- Plain CSS (no framework) — a custom paper/ink/brass design system
+- No backend, no database — all state lives in the browser via `localStorage`
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Getting started
+
+Clone the repo and install dependencies:
+
+```bash
+git clone https://github.com/Sheph3rdE/secret-shelf.git
+cd secret-shelf
+npm install
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+Run the dev server:
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```bash
+npm run dev
 ```
+
+Then open the local URL Vite prints in your terminal (typically `http://localhost:5173`).
+
+Build for production:
+
+```bash
+npm run build
+```
+
+The compiled site is output to `dist/`.
+
+## Project structure
+
+```
+secret-shelf/
+├── src/
+│   ├── components/
+│   │   ├── NoteForm.tsx        # Form for adding a new note
+│   │   ├── NoteList.tsx        # Renders saved notes as cards
+│   │   ├── StatusStamp.tsx     # Online/offline indicator
+│   │   └── WorkshopTracker.tsx # 5-step progress tracker
+│   ├── hooks/
+│   │   ├── useNotes.ts         # Notes state, persisted to localStorage
+│   │   ├── useOnlineStatus.ts  # Wraps navigator.onLine
+│   │   └── useWorkshopStep.ts  # Tracks and persists the active workshop step
+│   ├── pages/
+│   │   └── Home.tsx            # Main page, composes everything into the layout
+│   ├── styles/
+│   │   └── global.css          # Design system: colors, type, layout
+│   ├── types/
+│   │   └── index.ts            # Shared TypeScript types
+│   ├── App.tsx
+│   └── main.tsx
+├── index.html
+├── package.json
+├── tsconfig.json
+├── vite.config.ts
+└── wrangler.jsonc              # Cloudflare Workers static asset config
+```
+
+## Deployment
+
+This project is deployed as a Cloudflare Worker serving static assets. The `wrangler.jsonc` file at the repo root points Wrangler at the `dist` folder produced by `npm run build`, so no server-side code is needed:
+
+```jsonc
+{
+  "name": "secretshelf",
+  "compatibility_date": "2026-09-10",
+  "assets": {
+    "directory": "./dist"
+  }
+}
+```
+
+Pushing to `main` triggers an automatic build and deploy through Cloudflare's Git integration:
+
+- **Build command:** `npm run build`
+- **Deploy command:** `npx wrangler deploy`
+
+## Design notes
+
+The visual language draws from library card catalogs and commonplace books — warm paper tones, hairline rules instead of card shadows, a serif display face for headings, and a monospace face for small labels like dates and step numbers. No blue or purple anywhere in the palette; accents are forest green, brass, and burgundy.
+
+
