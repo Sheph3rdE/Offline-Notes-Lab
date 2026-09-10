@@ -1,4 +1,4 @@
-# Secret Shelf
+# Offline Notes Lab
 
 A quiet place to keep notes before they're ready for anyone else — styled like an old library card catalog.
 
